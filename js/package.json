@@ -1,0 +1,14 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "description": "A simple example using the cfg-lib library to process CFG configurations.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vinay Sajip <vinay_sajip@yahoo.co.uk>",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "cfg-lib": "^0.1.1-5"
+  }
+}

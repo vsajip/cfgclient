@@ -1,0 +1,356 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title>CFG Playground</title>
+  <meta name="description" content="CFG Playground">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Overpass|Overpass Mono|Roboto|Roboto Mono|Manrope&amp;display=swap">
+  <link href="https://fonts.red-dove.com/iosevka-ss09-regular/webfont.css" rel="stylesheet">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
+        integrity="sha256-Ww++W3rXBfapN8SZitAvc9jw2Xb+Ixt0rvDsmWmQyTo=" crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"
+        integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/codemirror@5.54.0/lib/codemirror.css"
+        integrity="sha256-F8x+Z3ibZvrT6AYhdYRAhBaA77XYocFUTGA/lMGNVYE=" crossorigin="anonymous">
+
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"
+          integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha256-9nt4LsWmLI/O24lTW89IzAKuBqEZ47l/4rh1+tH/NY8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.54.0/lib/codemirror.js"
+          integrity="sha256-HMBMEGw3DHPgAM4ZYslxP1/75uRlvol/56G4+o+nud0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.54.0/mode/javascript/javascript.js"
+          integrity="sha256-dY+W3GOt4MpAsoCz2NW2IrKk5LMSwKmW0ElpiXZxmVU=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.54.0/mode/yaml/yaml.js"
+          integrity="sha256-Q0ephOgt1DzzxnKN9uCDEAhzfzsplcYyy3AI+F06dbI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@3.14.0/dist/js-yaml.min.js"
+          integrity="sha256-8mtDTinb8+d2bC/9KhCJoCRBEylWUIV/3YEt5cSUvRk=" crossorigin="anonymous"></script>
+  <!-- script src="https://cdn.jsdelivr.net/npm/sprintf-js@1.1.2/dist/sprintf.min.js"
+          integrity="sha256-hxgUqrqMYB7xMwkrDmuXuZHYgGa9D8EzdBfbC7Tf7ew=" crossorigin="anonymous"></script -->
+
+  <script src="https://cdn.jsdelivr.net/npm/cfg-lib@0.1.1-5/dist/config.min.js" integrity="sha256-bpsd0/2w2JUyiZtfT1B5CjP652egbo2j6ooFOlau7ao=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
+  <style>
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: Overpass;
+      font-size: 16px;
+    }
+    .CodeMirror {
+      font-size: 14px;
+      height: 100%;
+    }
+    .parse-error {
+      color: #d10000;
+      font-weight: bold;
+    }
+  </style>
+  <div class="p-2 d-flex h-100">
+    <div class="w-50 h-100 p-2 d-flex flex-column">
+      <div style="margin-bottom: 4px">You can edit the CFG source below, and see the results at right:</div>
+      <textarea id="source" class="w-100 flex-grow-1"># You can have comments anywhere in a configuration.
+{
+  # You can have standard JSON-like key-value mapping.
+  "writer": "Oscar Fingal O'Flahertie Wills Wilde",
+  # But also use single-quotes for keys and values.
+  'a dimension': 'length: 5"',
+  # You can use identifiers for the keys.
+  string_value: 'a string value',
+  integer_value: 3,
+  float_value = 2.71828,         # you can use = instead of : as a key-value separator
+  complex_value: 3 + 2j,
+  negative_integer: -42,
+  big_number_with_underscores: 123_456_789.012_345,
+  boolean_value: true,           # these values are just like in JSON
+  opposite_boolean_value: false,
+  null_value: null
+  interpolated: `the whole gamut of emotions from ${list_value[2][1]} to ${list_value[2][3]}`
+  list_value: [
+    123,
+    4.5  # note the absence of a comma - a newline acts as a separator, too.
+    [
+      1,
+      'A',
+      2,
+      'B',  # note the trailing comma - doesn't cause errors
+    ]
+  ]  # a comma isn't needed here.
+  nested_mapping: {
+    integer_as_hex: 0x123
+    integer_as_oct: 0o123
+    integer_as_bin: 0b01101001
+    float_value: .14159,  # note the trailing comma - doesn't cause errors
+  } # no comma needed here either.
+  # You can use escape sequences ...
+  snowman_escaped: '\u2603'
+  # or not, and use e.g. utf-8 encoding.
+  snowman_unescaped: '☃'
+  # You can refer to code points outside the Basic Multilingual Plane
+  face_with_tears_of_joy: '\U0001F602'
+  unescaped_face_with_tears_of_joy: '😂'
+  # Refer to other values in this configuration.
+  refer_1: ${string_value},                  # -> 'a string value'
+  refer_2: ${list_value[1]},                 # -> 4.5
+  refer_3: ${nested_mapping.float_value},    # -> 0.14159
+  # Special values are implementation-dependent.
+  s_val_1: `$LANG|en_GB.UTF-8`               # -> environment var with default
+  s_val_2: `2019-03-28T23:27:04.314159`      # -> date/time value
+
+  # Expressions.
+  # N.B. backslash immediately followed by newline is seen as a continuation:
+  pi_approx: ${integer_value} + \
+              ${nested_mapping.float_value}   # -> 3.14159
+  sept_et_demi: ${integer_value} + \
+                ${list_value[1]}             # -> 7.5
+  multi_valued_1: '''abc
+def'''
+  multi_valued_2: """ghi
+jkl"""
+}</textarea>
+    </div>
+    <div id="outcol" class="w-50 h-100 p-2 d-flex flex-column">
+      <div class="d-flex">
+        <div class="mr-2">
+          Choose the display format for the results shown below:
+        </div>
+        <div>
+          <div class="form-check form-check-inline">
+            <input type="radio" class="form-check-input" name="outfmt" id="jsonfmt" value="json" checked>
+            <label class="form-check-label" for="jsonfmt">JSON</label>
+          </div>
+          <div class="form-check form-check-inline">
+              <input type="radio" class="form-check-input" name="outfmt" id="yamlfmt" value="yaml">
+              <label class="form-check-label" for="yamlfmt">YAML</label>
+          </div>
+        </div>
+      </div>
+      <textarea id="output" class="w-100 flex-grow-1"></textarea>
+    </div>
+  </div>
+  <script>
+    // define a CFG mode for the editor.
+
+    CodeMirror.defineMode('cfg', function(config, modeConfig) {
+
+      // return the mode object
+      return {
+        startState: function() {
+          return { line: 1};
+        },
+        blankLine: function(state) {
+          state.line++;
+        },
+        token: function(stream, state) {
+          let s = stream.peek();
+          let result = null;
+
+          if (s === ' ') {
+            stream.eatSpace();
+          }
+          else if (s === '#') {
+            stream.skipToEnd();
+            result = 'comment';
+          }
+          else if ((s === '"') || (s === "'") || (s === '\`')) {
+            let quote = stream.next();
+            let last = null;
+
+            while (s = stream.next()) {
+              if ((s === quote) && (last !== '\\')) {
+                break;
+              }
+              last = s;
+            }
+            result = s ? 'string' : 'string error';
+          }
+          else if (/[a-z_]/i.test(s)) {
+            let v = stream.match(/[a-z_]\w*/i, true);
+            let w = v[0];
+            result = ((w === 'true') || (w === 'false') || (w === 'null')) ? 'atom' : 'variable';
+          }
+          else if (s === '0') {
+            if (stream.match(/0b[01]+/i, true)) {
+              result = 'number';
+            }
+            else if (stream.match(/0o[0-7]+/i, true)) {
+              result = 'number';
+            }
+            else if (stream.match(/0x[0-9a-f]+/i, true)) {
+              result = 'number';
+            }
+            else {
+              stream.next();
+              result = 'number';
+            }
+          }
+          else if (/\d/.test(s)) {
+            let v = stream.match(/\d+(_\d+)*(\.(\d+(_\d)*)?)?(e-?\d+)?j?/i, true);
+            result = 'number';
+          }
+          else if (s === '.') {
+            let v;
+
+            s = stream.next();
+            if (v = stream.match(/\d+(_\d+)*(e-?\d+(_\d+)*)?j?/i, true)) {
+              result = 'number';
+            }
+            else {
+              result = 'operator';
+            }
+          }
+          else if ('=<>&|^+-*/%!'.indexOf(s) >= 0) {
+            if (stream.match(/[<>!=]=?|<>|&&?|[*][*]?|[/][/]?|[|][|]?/, true)) {
+              result = 'operator';
+            }
+            else {
+              s = stream.next();
+            }
+          }
+          else {
+            s = stream.next();
+          }
+          // console.log(state, stream.current(), result);
+          if (!stream.peek()) {
+            state.line++;
+          }
+          return result;
+        }
+      }
+    });
+
+    let scm;
+    let ocm;
+
+    function logTokens(s) {
+      let stream = CFG.makeStream(s);
+      let tokenizer = new CFG.Tokenizer(stream);
+      let token;
+
+      while (token = tokenizer.getToken()) {
+        console.log(token);
+        if (token.kind === CFG.TokenKind.EOF) {
+          break;
+        }
+      }
+    }
+
+    function formatLine(no, s) {
+      no = no.toString().padStart(5, ' ');
+      return `${no}|${s}`;
+    }
+
+    function formatLines(start, end, lines) {
+      let result = [];
+      let i;
+
+      for (i = start; i < end; i++) {
+        result.push(formatLine(i, lines[i - 1]));
+      }
+      result = result.join('\n');
+      return result ?  result + '\n': result;
+    }
+
+    let $jsonfmt;
+    let $ota;
+
+    function populateOutput(cm) {
+      let s = cm.getDoc().getValue();
+      let $cm = $('#outcol .CodeMirror');
+
+      try {
+        let stream = CFG.makeStream(s);
+        let cfg = new CFG.Config(stream);
+        let d = cfg.asDict();
+
+        if ($jsonfmt.prop('checked')) {
+          let o = JSON.stringify(d, null, 2);
+          ocm.getDoc().setValue(o);
+          ocm.setOption('mode', { name: 'javascript', json: true });
+        }
+        else {
+          let o = jsyaml.safeDump(d);
+          ocm.getDoc().setValue(o);
+          ocm.setOption('mode', 'yaml');
+        }
+        ocm.setOption('lineWrapping', false);
+        $cm.removeClass('parse-error');
+      }
+      catch (err) {
+        if (!err.location) {
+          console.error(err);
+        }
+        else {
+          const CONTEXT_LINES = 3;
+          let msg = err.message;
+          let loc = err.location;
+          let lines = s.split('\n');
+          let line = formatLine(loc.line, lines[loc.line - 1]);
+          let minLine = Math.max(1, loc.line - CONTEXT_LINES);
+          let maxLine = Math.min(lines.length, loc.line + CONTEXT_LINES);
+          let pre = formatLines(minLine, loc.line, lines);
+          let post = formatLines(loc.line + 1, maxLine + 1, lines);
+          let caret = `     |${' '.padStart(loc.column - 1, ' ')}^`;
+          let o = `Error at line ${loc.line}, column ${loc.column}: ${msg}
+${pre}${line}
+${caret}
+${post}`;
+          ocm.getDoc().setValue(o);
+          ocm.setOption('mode', 'text/plain');
+          ocm.setOption('lineWrapping', true);
+          $cm.addClass('parse-error');
+        }
+      }
+    }
+
+    function onChange(cm, e) {
+      populateOutput(cm);
+    }
+
+    $(document).ready(function() {
+      let $sta = $('#source');
+
+      $ota = $('#output');
+
+      $jsonfmt = $('#jsonfmt');
+
+      $('#jsonfmt, #yamlfmt').on('click', function() { populateOutput(scm); });
+
+      let sourceOptions = {
+        lineNumbers: true,
+        mode: 'cfg'
+      };
+      let outputOptions = {
+        lineNumbers: true,
+        readOnly: true,
+        mode: {
+          name: 'javascript',
+          json: true
+        }
+      }
+
+      scm = CodeMirror.fromTextArea($sta[0], sourceOptions);
+      ocm = CodeMirror.fromTextArea($ota[0], outputOptions);
+
+      $sta.data('cm', scm);
+      $ota.data('cm', ocm);
+
+      populateOutput(scm);
+      scm.on('change', onChange);
+    });
+  </script>
+</body>
+
+</html>

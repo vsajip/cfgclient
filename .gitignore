@@ -1,0 +1,15 @@
+python/env/
+dlang/.dub/
+dlang/dub.selections.json
+dlang/app
+dotnet/bin/
+dotnet/obj/
+go/main
+go/go.sum
+ruby/Gemfile.lock
+rust/Cargo.lock
+rust/target/
+js/node_modules/
+js/package-lock.json
+jvm/build/
+jvm/.gradle/

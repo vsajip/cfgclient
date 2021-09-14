@@ -1,0 +1,12 @@
+{
+	"authors": [
+		"Vinay Sajip"
+	],
+	"copyright": "Copyright © 2021, Vinay Sajip",
+	"dependencies": {
+		"cfg-lib": "~>0.1.1"
+	},
+	"description": "An application to test the D cfg-lib package.",
+	"license": "BSD-3-Clause",
+	"name": "app"
+}
