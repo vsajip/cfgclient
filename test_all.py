@@ -22,8 +22,8 @@ def get_exe(s):
     if s in ('npm', 'bundle', 'bundler', 'racc', 'rake', 'rdoc', 'ri', 'ridk',
              'erb', 'irb', 'gem'):
         ext = '.cmd'
-    elif s == 'gradle':
-        ext = '.bat'
+    # elif s == 'gradle':
+        # ext = '.bat'
     return '%s%s' % (s, ext)
 
 def find_base(base, drive):
