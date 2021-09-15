@@ -88,8 +88,8 @@ def test_python(basedir):
 def test_ruby(basedir):
     print('Testing for Ruby ...')
     wd = os.path.join(basedir, 'ruby')
-    run_command('bundle%s install' % EXE_EXT, wd)
-    out = run_command('ruby%s cfgclient.rb' % EXE_EXT, wd)
+    run_command('%s install' % get_exe('bundle'), wd)
+    out = run_command('%s cfgclient.rb' % get_exe('ruby'), wd)
     lines = out.splitlines()
     if not lines[-1].startswith('Hello, world! ('):
         raise ValueError('Unexpected result for Ruby: %s' % out)
