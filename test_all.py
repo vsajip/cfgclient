@@ -15,6 +15,7 @@ if sys.version_info[:2] < (3, 6):
 DEBUGGING = 'PY_DEBUG' in os.environ
 
 def test_dlang(basedir):
+    print('Testing for D ...')
     wd = os.path.join(basedir, 'dlang')
     cmd = 'dub run'.split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
@@ -23,6 +24,7 @@ def test_dlang(basedir):
         raise ValueError('Unexpected result for D: %s' % out)
 
 def test_dotnet(basedir):
+    print('Testing for C#/.NET ...')
     wd = os.path.join(basedir, 'dotnet')
     cmd = 'dotnet run'.split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
@@ -31,6 +33,7 @@ def test_dotnet(basedir):
         raise ValueError('Unexpected result for C#: %s' % out)
 
 def test_go(basedir):
+    print('Testing for Go ...')
     wd = os.path.join(basedir, 'go')
     cmd = 'go mod download github.com/vsajip/go-cfg-lib/config'.split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
@@ -42,6 +45,7 @@ def test_go(basedir):
         raise ValueError('Unexpected result for Go: %s' % out)
 
 def test_js(basedir):
+    print('Testing for JavaScript ...')
     wd = os.path.join(basedir, 'js')
     cmd = 'npm i cfg-lib'.split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
@@ -53,6 +57,7 @@ def test_js(basedir):
         raise ValueError('Unexpected result for JavaScript/Node: %s' % out)
 
 def test_jvm(basedir):
+    print('Testing for Kotlin/Java ...')
     wd = os.path.join(basedir, 'jvm')
     cmd = 'gradle run'.split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
@@ -64,6 +69,7 @@ def test_jvm(basedir):
         raise ValueError('Unexpected result for JVM: %s' % out)
 
 def test_python(basedir):
+    print('Testing for Python ...')
     wd = os.path.join(basedir, 'python')
     cmd = 'python3 app.py'.split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
@@ -72,6 +78,7 @@ def test_python(basedir):
         raise ValueError('Unexpected result for Python: %s' % out)
 
 def test_ruby(basedir):
+    print('Testing for Ruby ...')
     wd = os.path.join(basedir, 'ruby')
     cmd = 'bundle install'.split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
@@ -83,6 +90,7 @@ def test_ruby(basedir):
         raise ValueError('Unexpected result for Ruby: %s' % out)
 
 def test_rust(basedir):
+    print('Testing for Rust ...')
     wd = os.path.join(basedir, 'rust')
     cmd = 'cargo run'.split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
