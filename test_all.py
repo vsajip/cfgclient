@@ -97,21 +97,38 @@ def test_rust(basedir):
     if lines[-1] != 'Hello, world!':
         raise ValueError('Unexpected result for Rust: %s' % out)
 
+LANGS = set(('dlang', 'dotnet', 'go', 'javascript', 'jvm', 'python', 'ruby', 'rust'))
+
+def lang(s):
+    if s not in LANGS:
+        raise ValueError('Invalid lang: %s' % s)
+    return s
+
 def main():
     adhf = argparse.ArgumentDefaultsHelpFormatter
     ap = argparse.ArgumentParser(formatter_class=adhf)
     aa = ap.add_argument
-    # aa('--example', help='Example argument')
+    aa('langs', metavar='LANG', nargs='*', type=lang,
+       help='Language to run test for')
     options = ap.parse_args()
+    options.all = not bool(options.langs)
     basedir = os.getcwd()
-    test_dlang(basedir)
-    test_dotnet(basedir)
-    test_go(basedir)
-    test_js(basedir)
-    test_jvm(basedir)
-    test_python(basedir)
-    test_ruby(basedir)
-    test_rust(basedir)
+    if options.all or 'dlang' in options.langs:
+        test_dlang(basedir)
+    if options.all or 'dotnet' in options.langs:
+        test_dotnet(basedir)
+    if options.all or 'go' in options.langs:
+        test_go(basedir)
+    if options.all or 'javascript' in options.langs:
+        test_js(basedir)
+    if options.all or 'jvm' in options.langs:
+        test_jvm(basedir)
+    if options.all or 'python' in options.langs:
+        test_python(basedir)
+    if options.all or 'ruby' in options.langs:
+        test_ruby(basedir)
+    if options.all or 'rust' in options.langs:
+        test_rust(basedir)
 
 if __name__ == '__main__':
     try:
