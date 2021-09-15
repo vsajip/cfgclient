@@ -43,8 +43,10 @@ jobs:
     - name: Set up Node.js
       if: ${{ matrix.os == 'windows-latest' }}
       uses: actions/setup-node@v2
+      working-directory: js
       with:
         node-version: 12.x
+        cache: 'npm'
     - name: Test
       run: |
         python3 test_all.py
