@@ -75,7 +75,7 @@ def test_jvm(basedir):
 def test_python(basedir):
     print('Testing for Python ...')
     wd = os.path.join(basedir, 'python')
-    out = run_command('python3 app.py', wd)
+    out = run_command([sys.executable, 'app.py'], wd)
     lines = out.splitlines()
     if not lines[-1].startswith('Hello, world! ('):
         raise ValueError('Unexpected result for Python: %s' % out)
