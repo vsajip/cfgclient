@@ -45,8 +45,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: 12.x
-        cache: 'npm'
-        cache-dependency-path: js/package-lock.json
     - name: Test
       run: |
         python3 test_all.py

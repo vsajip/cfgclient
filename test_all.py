@@ -15,6 +15,12 @@ if sys.version_info[:2] < (3, 6):
 DEBUGGING = 'PY_DEBUG' in os.environ
 EXE_EXT = '.exe' if os.name == 'nt' else ''
 
+def get_exe(s):
+    if os.name == 'posix':
+        return s
+    ext = '.cmd' if s == 'npm' else '.exe'
+    return '%s%s' % (s, ext)
+
 def run_command(cmd, wd):
     print("Running '%s'" % cmd)
     if not isinstance(cmd, list):
@@ -49,8 +55,8 @@ def test_go(basedir):
 def test_js(basedir):
     print('Testing for JavaScript ...')
     wd = os.path.join(basedir, 'js')
-    run_command('npm%s i cfg-lib' % EXE_EXT, wd)
-    out = run_command('node%s app.js' % EXE_EXT, wd)
+    run_command('%s i cfg-lib' % get_exe('npm'), wd)
+    out = run_command('%s app.js' % get_exe('node'), wd)
     lines = out.splitlines()
     if lines[-1] != 'Hello, world!':
         raise ValueError('Unexpected result for JavaScript/Node: %s' % out)
