@@ -26,11 +26,29 @@ def get_exe(s):
         ext = '.bat'
     return '%s%s' % (s, ext)
 
+def find_base(base, drive):
+    start = '%s:/' % drive
+    prefix = base.lower()
+    for root, dirs, files in os.walk(start):
+        for fn in files:
+            n, e = os.path.splitext(fn)
+            if n.lower() == prefix:
+                p = os.path.join(root, fn)
+                print(p.replace(os.sep, '/'))
+
 def run_command(cmd, wd):
     print("Running '%s'" % cmd)
     if not isinstance(cmd, list):
         cmd = cmd.split()
-    return subprocess.check_output(cmd, cwd=wd).decode('utf-8')
+    try:
+        return subprocess.check_output(cmd, cwd=wd).decode('utf-8')
+    except Exception as e:
+        # temporary kludge to find where things are
+        if os.name == 'nt':
+            base = os.path.splitext(cmd[0])[0]
+            print('Looking for %s' % base)
+            find_base(base, 'c')
+        raise
 
 def test_dlang(basedir):
     print('Testing for D ...')
