@@ -13,6 +13,7 @@ if sys.version_info[:2] < (3, 6):
     sys.exit(1)
 
 DEBUGGING = 'PY_DEBUG' in os.environ
+EXE_EXT = '.exe' if os.name == 'nt' else ''
 
 def test_dlang(basedir):
     print('Testing for D ...')
@@ -47,10 +48,10 @@ def test_go(basedir):
 def test_js(basedir):
     print('Testing for JavaScript ...')
     wd = os.path.join(basedir, 'js')
-    cmd = 'npm i cfg-lib'.split()
+    cmd = ('npm%s i cfg-lib' % EXE_EXT).split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
     lines = out.splitlines()
-    cmd = 'node app.js'.split()
+    cmd = ('node%s app.js' % EXE_EXT).split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
     lines = out.splitlines()
     if lines[-1] != 'Hello, world!':
@@ -80,10 +81,10 @@ def test_python(basedir):
 def test_ruby(basedir):
     print('Testing for Ruby ...')
     wd = os.path.join(basedir, 'ruby')
-    cmd = 'bundle install'.split()
+    cmd = ('bundle%s install' % EXE_EXT).split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
     lines = out.splitlines()
-    cmd = 'ruby cfgclient.rb'.split()
+    cmd = ('ruby%s cfgclient.rb' % EXE_EXT).split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
     lines = out.splitlines()
     if not lines[-1].startswith('Hello, world! ('):
@@ -92,7 +93,7 @@ def test_ruby(basedir):
 def test_rust(basedir):
     print('Testing for Rust ...')
     wd = os.path.join(basedir, 'rust')
-    cmd = 'cargo run'.split()
+    cmd = ('cargo%s run' % EXE_EXT).split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
     lines = out.splitlines()
     if lines[-1] != 'Hello, world!':
