@@ -11,10 +11,11 @@ class App {
             val r = StringReader(s)
             val cfg = Config()
             cfg.load(r)
-            return cfg.get("key") as String
+            return cfg["key"] as String
         }
 }
 
 fun main() {
+    JavaApp.main(arrayOf(""))
     println(App().greeting)
 }

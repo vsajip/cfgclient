@@ -57,9 +57,9 @@ def test_jvm(basedir):
     cmd = 'gradle run'.split()
     out = subprocess.check_output(cmd, cwd=wd).decode('utf-8')
     if os.name == 'nt':
-        expected = '> Task :run\r\nHello, world!\r\n'
+        expected = '> Task :run\r\nHello, world!\r\nHello, world!\r\n'
     else:
-        expected = '> Task :run\nHello, world!\n'
+        expected = '> Task :run\nHello, world!\nHello, world!\n'
     if expected not in out:
         raise ValueError('Unexpected result for JVM: %s' % out)
 

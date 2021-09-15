@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.red-dove:config:0.1.1")
+    implementation("com.red-dove:config:0.1.2")
 
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
