@@ -2,6 +2,7 @@ python/env/
 dlang/.dub/
 dlang/dub.selections.json
 dlang/app
+dlang/app.exe
 dotnet/bin/
 dotnet/obj/
 go/main

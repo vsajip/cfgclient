@@ -18,7 +18,12 @@ EXE_EXT = '.exe' if os.name == 'nt' else ''
 def get_exe(s):
     if os.name == 'posix':
         return s
-    ext = '.cmd' if s == 'npm' else '.exe'
+    ext = '.exe'
+    if s in ('npm', 'bundle', 'bundler', 'racc', 'rake', 'rdoc', 'ri', 'ridk',
+             'erb', 'irb', 'gem'):
+        ext = '.cmd'
+    elif s == 'gradle':
+        ext = '.bat'
     return '%s%s' % (s, ext)
 
 def run_command(cmd, wd):
@@ -64,7 +69,7 @@ def test_js(basedir):
 def test_jvm(basedir):
     print('Testing for Kotlin/Java ...')
     wd = os.path.join(basedir, 'jvm')
-    out = run_command('gradle run', wd)
+    out = run_command('%s run' % get_exe('gradle'), wd)
     if os.name == 'nt':
         expected = '> Task :run\r\nHello, world!\r\nHello, world!\r\n'
     else:
