@@ -41,10 +41,10 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Set up Node.js
+      if: ${{ matrix.os != 'windows-latest' }}
       uses: actions/setup-node@v2
       with:
         node-version: 12.x
-        cache: 'npm'
     - name: Test
       run: |
         python3 test_all.py
