@@ -31,7 +31,9 @@ def main():
             pyexec = os.path.join(envpath, 'bin', 'python')
         else:
             pyexec = os.path.join(envpath, 'Scripts', 'python.exe')
-        assert os.path.exists(pyexec)
+        if not os.path.exists(pyexec):
+            d = os.path.dirname(pyexec)
+            print('Executable %s not found, dir has: %s' % (pyexec, os.listdir(d)))
         cmd = [pyexec, '-m', 'pip', 'install', 'config']
         subprocess.check_call(cmd)
         cmd = [pyexec, 'prog.py']
