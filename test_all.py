@@ -104,8 +104,7 @@ def test_python(basedir):
     print('Testing for Python ...')
     wd = os.path.join(basedir, 'python')
     out = run_command([sys.executable, 'app.py'], wd)
-    lines = out.splitlines()
-    if not lines[-1].startswith('Hello, world! ('):
+    if '\nHello, world! (' not in out:
         raise ValueError('Unexpected result for Python: %s' % out)
 
 def test_ruby(basedir):
