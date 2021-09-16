@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2021 Red Dove Consultants Limited
+# Copyright (C) 2021 Vinay Sajip
 #
 import argparse
 import os
@@ -126,7 +126,7 @@ def lang(s):
     return s
 
 def main():
-    print('Running on Python %s: %s' % (sys.version_info, sys.executable))
+    print('Running on Python %s: %s' % (sys.version_info[:2], sys.executable))
     adhf = argparse.ArgumentDefaultsHelpFormatter
     ap = argparse.ArgumentParser(formatter_class=adhf)
     aa = ap.add_argument
@@ -143,14 +143,14 @@ def main():
         test_go(basedir)
     if options.all or 'javascript' in options.langs:
         test_js(basedir)
-    if options.all or 'jvm' in options.langs:
-        test_jvm(basedir)
-    if options.all or 'python' in options.langs:
-        test_python(basedir)
-    if options.all or 'ruby' in options.langs:
-        test_ruby(basedir)
     if options.all or 'rust' in options.langs:
         test_rust(basedir)
+    if options.all or 'ruby' in options.langs:
+        test_ruby(basedir)
+    if options.all or 'python' in options.langs:
+        test_python(basedir)
+    if options.all or 'jvm' in options.langs:
+        test_jvm(basedir)
 
 if __name__ == '__main__':
     try:
