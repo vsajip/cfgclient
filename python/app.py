@@ -17,6 +17,12 @@ import venv
 
 DEBUGGING = 'PY_DEBUG' in os.environ
 
+def dump_dirs(start):
+    for root, dirs, files in os.walk(start):
+        for fn in files:
+            p = os.path.join(root, fn)
+            print(p)
+
 def main():
     adhf = argparse.ArgumentDefaultsHelpFormatter
     ap = argparse.ArgumentParser(formatter_class=adhf)
@@ -27,10 +33,13 @@ def main():
         shutil.rmtree('env')
     try:
         envpath = os.path.abspath('env')
+        print('Creating venv at %s' % envpath)
         venv.create(envpath, with_pip=True)
+        print('Created venv at %s' % envpath)
         if os.name == 'posix':
             pyexec = os.path.join(envpath, 'bin', 'python')
         else:
+            dump_dirs(envpath)
             pyexec = os.path.join(envpath, 'Scripts', 'python.exe')
         if not os.path.exists(pyexec):
             d = os.path.dirname(pyexec)
@@ -40,7 +49,7 @@ def main():
         cmd = [pyexec, 'prog.py']
         subprocess.check_call(cmd)
     except Exception as e:
-        print('Failed for %s: %s' % (cmd, e.__class__))
+        print('Failed: %s: %s' % (e.__class__, e))
 
 if __name__ == '__main__':
     try:
