@@ -26,7 +26,7 @@ def main():
     try:
         envpath = os.path.abspath('env')
         cmd = [sys.executable, '-m', 'venv', envpath]
-        subprocess.check_call(cmd)
+        out = subprocess.check_output(cmd).decode('utf-8')
         if os.name == 'posix':
             pyexec = os.path.join(envpath, 'bin', 'python')
         else:
@@ -35,7 +35,7 @@ def main():
             d = os.path.dirname(pyexec)
             print('Executable %s not found, dir has: %s' % (pyexec, os.listdir(d)))
         cmd = [pyexec, '-m', 'pip', 'install', 'config']
-        subprocess.check_call(cmd)
+        out = subprocess.check_output(cmd).decode('utf-8')
         cmd = [pyexec, 'prog.py']
         subprocess.check_call(cmd)
     except Exception as e:
