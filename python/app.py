@@ -23,20 +23,23 @@ def main():
     options = ap.parse_args()
     if os.path.isdir('env'):
         shutil.rmtree('env')
-    cmd = [sys.executable, '-m', 'venv', 'env']
-    subprocess.check_call(cmd)
-    if os.name == 'posix':
-        pipexec = os.path.join('env', 'bin', 'pip')
-        pyexec = os.path.join('env', 'bin', 'python')
-    else:
-        pipexec = os.path.join('env', 'Scripts', 'pip.exe')
-        pyexec = os.path.join('env', 'Scripts', 'python.exe')
-    cmd = [pipexec, 'install', '-U', 'pip']
-    subprocess.check_call(cmd)
-    cmd = [pipexec, 'install', 'config']
-    subprocess.check_call(cmd)
-    cmd = [pyexec, 'prog.py']
-    subprocess.check_call(cmd)
+    try:
+        cmd = [sys.executable, '-m', 'venv', 'env']
+        subprocess.check_call(cmd)
+        if os.name == 'posix':
+            pipexec = os.path.join('env', 'bin', 'pip')
+            pyexec = os.path.join('env', 'bin', 'python')
+        else:
+            pipexec = os.path.join('env', 'Scripts', 'pip.exe')
+            pyexec = os.path.join('env', 'Scripts', 'python.exe')
+        cmd = [pipexec, 'install', '-U', 'pip']
+        subprocess.check_call(cmd)
+        cmd = [pipexec, 'install', 'config']
+        subprocess.check_call(cmd)
+        cmd = [pyexec, 'prog.py']
+        subprocess.check_call(cmd)
+    except Exception as e:
+        print('Failed for %s: %s' % (cmd, e))
 
 if __name__ == '__main__':
     try:
