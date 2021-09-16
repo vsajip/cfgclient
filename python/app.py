@@ -24,12 +24,16 @@ def main():
     if os.path.isdir('env'):
         shutil.rmtree('env')
     try:
-        cmd = [sys.executable, '-m', 'venv', 'env']
+        envpath = os.path.abspath('env')
+        print('venv path: %s' % envpath)
+        sys.stdout.flush()
+        cmd = [sys.executable, '-m', 'venv', envpath]
         subprocess.check_call(cmd)
         if os.name == 'posix':
-            pyexec = os.path.join('env', 'bin', 'python')
+            pyexec = os.path.join(envpath, 'bin', 'python')
         else:
-            pyexec = os.path.join('env', 'Scripts', 'python.exe')
+            pyexec = os.path.join(envpath, 'Scripts', 'python.exe')
+        assert os.path.exists(pyexec)
         cmd = [pyexec, '-m', 'pip', 'install', 'config']
         subprocess.check_call(cmd)
         cmd = [pyexec, 'prog.py']
