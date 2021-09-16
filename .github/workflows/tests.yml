@@ -66,9 +66,14 @@ jobs:
         python3 test_all.py javascript
       env:
         PY_DEBUG: 1
-    - name: Test Kotlin/Java
+    - name: Test Rust
       run: |
-        python3 test_all.py jvm
+        python3 test_all.py rust
+      env:
+        PY_DEBUG: 1
+    - name: Test Ruby
+      run: |
+        python3 test_all.py ruby
       env:
         PY_DEBUG: 1
     - name: Test Python on POSIX
@@ -83,13 +88,8 @@ jobs:
         python test_all.py python
       env:
         PY_DEBUG: 1
-    - name: Test Ruby
+    - name: Test Kotlin/Java
       run: |
-        python3 test_all.py ruby
-      env:
-        PY_DEBUG: 1
-    - name: Test Rust
-      run: |
-        python3 test_all.py rust
+        python3 test_all.py jvm
       env:
         PY_DEBUG: 1
