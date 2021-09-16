@@ -25,9 +25,8 @@ def main():
         shutil.rmtree('env')
     try:
         envpath = os.path.abspath('env')
-        print('venv path: %s' % envpath)
-        sys.stdout.flush()
         cmd = [sys.executable, '-m', 'venv', envpath]
+        print('Running %s' % cmd)
         subprocess.check_call(cmd)
         if os.name == 'posix':
             pyexec = os.path.join(envpath, 'bin', 'python')
@@ -35,6 +34,7 @@ def main():
             pyexec = os.path.join(envpath, 'Scripts', 'python.exe')
         assert os.path.exists(pyexec)
         cmd = [pyexec, '-m', 'pip', 'install', 'config']
+        print('Running %s' % cmd)
         subprocess.check_call(cmd)
         cmd = [pyexec, 'prog.py']
         subprocess.check_call(cmd)
