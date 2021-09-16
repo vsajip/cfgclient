@@ -22,8 +22,6 @@ def get_exe(s):
     if s in ('npm', 'bundle', 'bundler', 'racc', 'rake', 'rdoc', 'ri', 'ridk',
              'erb', 'irb', 'gem'):
         ext = '.cmd'
-    # elif s == 'gradle':
-        # ext = '.bat'
     return '%s%s' % (s, ext)
 
 def find_base(base, drive):
@@ -128,6 +126,7 @@ def lang(s):
     return s
 
 def main():
+    print('Running on Python %s: %s' % (sys.version_info, sys.executable))
     adhf = argparse.ArgumentDefaultsHelpFormatter
     ap = argparse.ArgumentParser(formatter_class=adhf)
     aa = ap.add_argument
