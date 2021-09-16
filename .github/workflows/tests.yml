@@ -76,18 +76,18 @@ jobs:
         python3 test_all.py ruby
       env:
         PY_DEBUG: 1
-    - name: Test Python on POSIX
-      if: ${{ matrix.os != 'windows-latest' }}
+    - name: Test Python
+      #if: ${{ matrix.os != 'windows-latest' }}
       run: |
         python3 test_all.py python
       env:
         PY_DEBUG: 1
-    - name: Test Python on Windows
-      if: ${{ matrix.os == 'windows-latest' }}
-      run: |
-        python test_all.py python
-      env:
-        PY_DEBUG: 1
+    #- name: Test Python on Windows
+      #if: ${{ matrix.os == 'windows-latest' }}
+      #run: |
+        #python test_all.py python
+      #env:
+        #PY_DEBUG: 1
     - name: Test Kotlin/Java
       run: |
         python3 test_all.py jvm
