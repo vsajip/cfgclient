@@ -40,7 +40,7 @@ def run_command(cmd, wd):
         cmd = cmd.split()
     try:
         return subprocess.check_output(cmd, cwd=wd).decode('utf-8')
-    except Exception as e:
+    except FileNotFoundError as e:
         # temporary kludge to find where things are
         if os.name == 'nt':
             exe = cmd[0]
