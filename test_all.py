@@ -43,9 +43,16 @@ def run_command(cmd, wd):
     except Exception as e:
         # temporary kludge to find where things are
         if os.name == 'nt':
-            base = os.path.splitext(cmd[0])[0]
-            print('Looking for %s' % base)
-            find_base(base, 'c')
+            exe = cmd[0]
+            if os.path.isabs(exe):
+                if os.path.exists(exe):
+                    print('Path exists, some other problem: %s' % exe)
+                else:
+                    print('Not looking, because absolute: %s' % exe)
+            else:
+                base = os.path.splitext(exe)[0]
+                print('Looking for %s' % base)
+                find_base(base, 'c')
         raise
 
 def test_dlang(basedir):
