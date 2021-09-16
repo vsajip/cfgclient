@@ -39,8 +39,11 @@ def main():
         if os.name == 'posix':
             pyexec = os.path.join(envpath, 'bin', 'python')
         else:
-            dump_dirs(envpath)
-            pyexec = os.path.join(envpath, 'Scripts', 'python.exe')
+            # dump_dirs(envpath)
+            d = os.path.join(envpath, 'Scripts')
+            if not os.path.exists(d):
+                d = os.path.join(envpath, 'bin')
+            pyexec = os.path.join(d, 'python.exe')
         if not os.path.exists(pyexec):
             d = os.path.dirname(pyexec)
             print('Executable %s not found, dir has: %s' % (pyexec, os.listdir(d)))
