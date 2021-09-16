@@ -27,14 +27,10 @@ def main():
         cmd = [sys.executable, '-m', 'venv', 'env']
         subprocess.check_call(cmd)
         if os.name == 'posix':
-            pipexec = os.path.join('env', 'bin', 'pip')
             pyexec = os.path.join('env', 'bin', 'python')
         else:
-            pipexec = os.path.join('env', 'Scripts', 'pip.exe')
             pyexec = os.path.join('env', 'Scripts', 'python.exe')
-        cmd = [pipexec, 'install', '-U', 'pip']
-        subprocess.check_call(cmd)
-        cmd = [pipexec, 'install', 'config']
+        cmd = [pyexec, '-m', 'pip', 'install', 'config']
         subprocess.check_call(cmd)
         cmd = [pyexec, 'prog.py']
         subprocess.check_call(cmd)
