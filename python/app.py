@@ -13,6 +13,8 @@ if sys.version_info[:2] < (3, 6):
     print('This program must be run under Python 3.6 or later.')
     sys.exit(1)
 
+import venv
+
 DEBUGGING = 'PY_DEBUG' in os.environ
 
 def main():
@@ -25,8 +27,7 @@ def main():
         shutil.rmtree('env')
     try:
         envpath = os.path.abspath('env')
-        cmd = [sys.executable, '-m', 'venv', envpath]
-        out = subprocess.check_output(cmd).decode('utf-8')
+        venv.create(envpath, with_pip=True)
         if os.name == 'posix':
             pyexec = os.path.join(envpath, 'bin', 'python')
         else:
