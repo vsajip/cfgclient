@@ -103,7 +103,7 @@ def test_jvm(basedir):
 def test_python(basedir):
     print('Testing for Python ...')
     wd = os.path.join(basedir, 'python')
-    out = run_command([sys.executable, 'app.py'], wd)
+    out = run_command(['python', 'app.py'], wd)
     if 'Hello, world! (' not in out:
         p = os.path.join(wd, 'app.log')
         with open(p, encoding='utf-8') as f:

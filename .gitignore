@@ -1,4 +1,5 @@
 python/env/
+python/app.log
 dlang/.dub/
 dlang/dub.selections.json
 dlang/app
