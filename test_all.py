@@ -105,6 +105,10 @@ def test_python(basedir):
     wd = os.path.join(basedir, 'python')
     out = run_command([sys.executable, 'app.py'], wd)
     if 'Hello, world! (' not in out:
+        p = os.path.join(wd, 'app.log')
+        with open(p, encoding='utf-8') as f:
+            data = f.read()
+        print(data)
         raise ValueError('Unexpected result for Python: %s' % out)
 
 def test_ruby(basedir):
