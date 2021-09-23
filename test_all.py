@@ -92,7 +92,7 @@ def test_js(basedir):
 def test_jvm(basedir):
     print('Testing for Kotlin/Java ...')
     wd = os.path.join(basedir, 'jvm')
-    out = run_command('%s run' % get_exe('gradle'), wd)
+    out = run_command('%s run --no-daemon' % get_exe('gradle'), wd)
     if os.name == 'nt':
         expected = '> Task :run\r\nHello, world!\r\nHello, world!\r\n'
     else:
