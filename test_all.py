@@ -95,7 +95,7 @@ def test_jvm(basedir):
     wd = os.path.join(basedir, 'jvm')
     start = time.time()
     # out = run_command('%s run --no-daemon' % get_exe('gradle'), wd)
-    out = run_command('%s run' % get_exe('gradle'), wd)
+    out = run_command('%s run --debug' % get_exe('gradle'), wd)
     if os.name == 'nt':
         expected = '> Task :run\r\nHello, world!\r\nHello, world!\r\n'
     else:
@@ -104,8 +104,7 @@ def test_jvm(basedir):
         raise ValueError('Unexpected result for JVM: %s' % out)
     elapsed = time.time() - start
     print('Run completed in %.2f secs' % elapsed)
-    if elapsed > 1800:  # more than 30 mins? print the whole output
-        print(out)
+    print(out)
 
 def test_python(basedir):
     print('Testing for Python ...')
