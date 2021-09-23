@@ -6,7 +6,7 @@ import com.reddove.config.*;
 
 public class JavaApp {
     public static void main(String[] args) {
-        String s = "{key: 'Hello, world!'}";
+        String s = "{key: 'Hello, Java world!'}";
         StringReader r = new StringReader(s);
         Config cfg = new Config();
         cfg.load(r);

@@ -97,10 +97,12 @@ def test_jvm(basedir):
     # out = run_command('%s run --no-daemon' % get_exe('gradle'), wd)
     out = run_command('%s run --debug' % get_exe('gradle'), wd)
     if os.name == 'nt':
-        expected = '> Task :run\r\nHello, world!\r\nHello, world!\r\n'
+        expected1 = 'Hello, Kotlin world!\r\n'
+        expected2 = 'Hello, Java world!\r\n'
     else:
-        expected = '> Task :run\nHello, world!\nHello, world!\n'
-    if expected not in out:
+        expected1 = 'Hello, Kotlin world!\n'
+        expected2 = 'Hello, Java world!\n'
+    if expected1 not in out or expected2 not in out:
         raise ValueError('Unexpected result for JVM: %s' % out)
     elapsed = time.time() - start
     print('Run completed in %.2f secs' % elapsed)

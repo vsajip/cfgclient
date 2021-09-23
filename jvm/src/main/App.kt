@@ -7,7 +7,7 @@ import com.reddove.config.*
 class App {
     val greeting: String
         get() {
-            val s = "{key: 'Hello, world!'}"
+            val s = "{key: 'Hello, Kotlin world!'}"
             val r = StringReader(s)
             val cfg = Config()
             cfg.load(r)
