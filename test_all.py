@@ -94,8 +94,7 @@ def test_jvm(basedir):
     print('Testing for Kotlin/Java ...')
     wd = os.path.join(basedir, 'jvm')
     start = time.time()
-    # out = run_command('%s run --no-daemon' % get_exe('gradle'), wd)
-    out = run_command('%s run --debug' % get_exe('gradle'), wd)
+    out = run_command('%s run --no-daemon' % get_exe('gradle'), wd)
     if os.name == 'nt':
         expected1 = 'Hello, Kotlin world!\r\n'
         expected2 = 'Hello, Java world!\r\n'
@@ -104,9 +103,9 @@ def test_jvm(basedir):
         expected2 = 'Hello, Java world!\n'
     if expected1 not in out or expected2 not in out:
         raise ValueError('Unexpected result for JVM: %s' % out)
-    elapsed = time.time() - start
-    print('Run completed in %.2f secs' % elapsed)
-    print(out)
+    # elapsed = time.time() - start
+    # print('Run completed in %.2f secs' % elapsed)
+    # print(out)
 
 def test_python(basedir):
     print('Testing for Python ...')
