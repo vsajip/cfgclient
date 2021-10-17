@@ -135,7 +135,18 @@ def test_rust(basedir):
     if lines[-1] != 'Hello, world!':
         raise ValueError('Unexpected result for Rust: %s' % out)
 
-LANGS = set(('dlang', 'dotnet', 'go', 'javascript', 'jvm', 'python', 'ruby', 'rust'))
+def test_elixir(basedir):
+    print('Testing for Elixir ...')
+    wd = os.path.join(basedir, 'elixir')
+    run_command('mix deps.get', wd)
+    run_command('mix compile', wd)
+    out = run_command('mix run cfgclient.exs', wd)
+    lines = out.splitlines()
+    if lines[-1] != 'Hello, world!':
+        raise ValueError('Unexpected result for Elixir: %s' % out)
+
+LANGS = set(('dlang', 'dotnet', 'go', 'javascript', 'jvm', 'python', 'ruby', 'rust',
+             'elixir'))
 
 def lang(s):
     if s not in LANGS:
@@ -166,6 +177,8 @@ def main():
         test_ruby(basedir)
     if options.all or 'python' in options.langs:
         test_python(basedir)
+    if options.all or 'elixir' in options.langs:
+        test_elixir(basedir)
     if options.all or 'jvm' in options.langs:
         test_jvm(basedir)
 
