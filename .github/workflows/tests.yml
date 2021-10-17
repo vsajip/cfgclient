@@ -84,7 +84,7 @@ jobs:
         python3 test_all.py ruby
       env:
         PY_DEBUG: 1
-    - name: Text Elixir (MacOS excepted)
+    - name: Test Elixir (MacOS excepted)
       if: ${{ matrix.os != 'macos-latest' }}
       run: |
         python3 test_all.py elixir
