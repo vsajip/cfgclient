@@ -47,9 +47,15 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Set up Elixir
+    - name: Set up Elixir (non-MacOS)
       if: ${{ matrix.os != 'macos-latest' }}
       uses: erlef/setup-beam@v1
+      with:
+        otp-version: 22.2
+        elixir-version: 1.9.1
+    - name: Set up Elixir (MacOS)
+      if: ${{ matrix.os == 'macos-latest' }}
+      uses: actions/setup-elixir@v1
       with:
         otp-version: 22.2
         elixir-version: 1.9.1
