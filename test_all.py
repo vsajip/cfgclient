@@ -23,6 +23,8 @@ def get_exe(s):
     if s in ('npm', 'bundle', 'bundler', 'racc', 'rake', 'rdoc', 'ri', 'ridk',
              'erb', 'irb', 'gem'):
         ext = '.cmd'
+    elif s in ('mix',):
+        ext = '.bat'
     return '%s%s' % (s, ext)
 
 def find_base(base, drive):
@@ -138,9 +140,9 @@ def test_rust(basedir):
 def test_elixir(basedir):
     print('Testing for Elixir ...')
     wd = os.path.join(basedir, 'elixir')
-    run_command('mix deps.get', wd)
-    run_command('mix compile', wd)
-    out = run_command('mix run cfgclient.exs', wd)
+    run_command('%s deps.get' % get_exe('mix'), wd)
+    run_command('%s compile' % get_exe('mix'), wd)
+    out = run_command('%s run cfgclient.exs' % get_exe('mix'), wd)
     lines = out.splitlines()
     if lines[-1] != 'Hello, world!':
         raise ValueError('Unexpected result for Elixir: %s' % out)
