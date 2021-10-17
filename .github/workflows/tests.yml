@@ -53,6 +53,10 @@ jobs:
       with:
         otp-version: 22.2
         elixir-version: 1.9.1
+    - name: Print Windows path
+      if: ${{ matrix.os == 'windows-latest' }}
+      run: |
+        $env:path -split ";"
     # Run tests one-by-one to see progress more quickly
     - name: Test D
       run: |
