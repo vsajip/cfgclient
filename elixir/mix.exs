@@ -5,7 +5,7 @@ defmodule CFGClient.MixProject do
     [
       app: :cfg_client,
       version: "0.1.0",
-      elixir: "~> 1.12",
+      elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       escript: [main_module: CFGClient],
       deps: deps()
