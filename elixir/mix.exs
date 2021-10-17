@@ -20,7 +20,7 @@ defmodule CFGClient.MixProject do
 
   defp deps do
     [
-      {:cfg_lib, "~> 0.0"}
+      {:cfg_lib, "~> 0.1"}
     ]
   end
 end

@@ -15,3 +15,6 @@ js/node_modules/
 js/package-lock.json
 jvm/build/
 jvm/.gradle/
+elixir/_build
+elixir/deps
+elixir/mix.lock
