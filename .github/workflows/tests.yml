@@ -43,6 +43,10 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: 12.x
+    - name: Set up Nim
+      uses: actions-nim/setup-nim@v1
+      with:
+        nim-version: '1.4.4'
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
@@ -92,6 +96,11 @@ jobs:
       if: ${{ matrix.os != 'macos-latest' }}
       run: |
         python3 test_all.py elixir
+      env:
+        PY_DEBUG: 1
+    - name: Test Nim
+      run: |
+        python3 test_all.py nim
       env:
         PY_DEBUG: 1
     - name: Test Python

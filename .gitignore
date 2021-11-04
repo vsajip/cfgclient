@@ -18,3 +18,4 @@ jvm/.gradle/
 elixir/_build
 elixir/deps
 elixir/mix.lock
+nim/cfgclient

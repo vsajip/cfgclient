@@ -147,8 +147,16 @@ def test_elixir(basedir):
     if lines[-1] != 'Hello, world!':
         raise ValueError('Unexpected result for Elixir: %s' % out)
 
+def test_nim(basedir):
+    print('Testing for Nim ...')
+    wd = os.path.join(basedir, 'nim')
+    out = run_command('%s run' % get_exe('nimble'), wd)
+    lines = out.splitlines()
+    if lines[-1] != 'Hello, world!':
+        raise ValueError('Unexpected result for Nim: %s' % out)
+
 LANGS = set(('dlang', 'dotnet', 'go', 'javascript', 'jvm', 'python', 'ruby', 'rust',
-             'elixir'))
+             'elixir', 'nim'))
 
 def lang(s):
     if s not in LANGS:
@@ -181,6 +189,8 @@ def main():
         test_python(basedir)
     if options.all or 'elixir' in options.langs:
         test_elixir(basedir)
+    if options.all or 'nim' in options.langs:
+        test_nim(basedir)
     if options.all or 'jvm' in options.langs:
         test_jvm(basedir)
 
