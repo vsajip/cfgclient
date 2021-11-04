@@ -42,7 +42,20 @@ def run_command(cmd, wd):
     if not isinstance(cmd, list):
         cmd = cmd.split()
     try:
-        return subprocess.check_output(cmd, cwd=wd).decode('utf-8')
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=wd)
+        stdout, stderr = p.communicate()
+        if p.returncode == 0:
+            return stdout.decode('utf-8')
+        else:
+            print('Command failed with return code %d' % p.returncode)
+            print('stdout was:')
+            if stdout: print(stdout.decode('utf-8'))
+            print('stderr was:')
+            if stderr: print(stderr.decode('utf-8'))
+            print('Raising an exception')
+            raise subprocess.CalledProcessError(p.returncode, p.args,
+                                                output=stdout, stderr=stderr)
+        # return subprocess.check_output(cmd, cwd=wd).decode('utf-8')
     except FileNotFoundError as e:
         # temporary kludge to find where things are
         if os.name == 'nt':
