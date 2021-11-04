@@ -163,7 +163,7 @@ def test_elixir(basedir):
 def test_nim(basedir):
     print('Testing for Nim ...')
     wd = os.path.join(basedir, 'nim')
-    out = run_command('%s run' % get_exe('nimble'), wd)
+    out = run_command('%s run -y' % get_exe('nimble'), wd)
     lines = out.splitlines()
     if lines[-1] != 'Hello, world!':
         raise ValueError('Unexpected result for Nim: %s' % out)
