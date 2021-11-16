@@ -168,8 +168,17 @@ def test_nim(basedir):
     if lines[-1] != 'Hello, world!':
         raise ValueError('Unexpected result for Nim: %s' % out)
 
+def test_dart(basedir):
+    print('Testing for Dart ...')
+    wd = os.path.join(basedir, 'dart')
+    run_command('%s pub get' % get_exe('dart'), wd)
+    out = run_command('%s run' % get_exe('dart'), wd)
+    lines = out.splitlines()
+    if lines[-1] != 'Hello, world!':
+        raise ValueError('Unexpected result for Nim: %s' % out)
+
 LANGS = set(('dlang', 'dotnet', 'go', 'javascript', 'jvm', 'python', 'ruby', 'rust',
-             'elixir', 'nim'))
+             'elixir', 'nim', 'dart'))
 
 def lang(s):
     if s not in LANGS:
@@ -204,6 +213,8 @@ def main():
         test_elixir(basedir)
     if options.all or 'nim' in options.langs:
         test_nim(basedir)
+    if options.all or 'dart' in options.langs:
+        test_dart(basedir)
     if options.all or 'jvm' in options.langs:
         test_jvm(basedir)
 

@@ -1,0 +1,14 @@
+name: cfgclient
+description: A simple CFG client for Dart.
+version: 1.0.0
+# homepage: https://docs.red-dove.com/cfg/index.html
+
+environment:
+  sdk: '>=2.14.4 <3.0.0'
+
+
+dependencies:
+   cfg_lib: ^0.1.0
+
+dev_dependencies:
+  lints: ^1.0.0

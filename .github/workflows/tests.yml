@@ -57,6 +57,10 @@ jobs:
       with:
         otp-version: 22.2
         elixir-version: 1.9.1
+    - name: Set up Dart
+      uses: dart-lang/setup-dart@v1
+      with:
+        sdk: stable
     - name: Print Windows path
       if: ${{ matrix.os == 'windows-latest' }}
       run: |
@@ -103,19 +107,16 @@ jobs:
         python3 test_all.py nim
       env:
         PY_DEBUG: 1
+    - name: Test Dart
+      run: |
+        python3 test_all.py dart
+      env:
+        PY_DEBUG: 1
     - name: Test Python
-      #if: ${{ matrix.os != 'windows-latest' }}
       run: |
         python3 test_all.py python
       env:
         PY_DEBUG: 1
-    #- name: Test Python on Windows
-      #if: ${{ matrix.os == 'windows-latest' }}
-      #run: |
-        #python test_all.py python
-      #env:
-        #PY_DEBUG: 1
-
     - name: Test Kotlin/Java
       run: |
         python3 test_all.py jvm
