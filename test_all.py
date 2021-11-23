@@ -14,7 +14,6 @@ if sys.version_info[:2] < (3, 6):
     sys.exit(1)
 
 DEBUGGING = 'PY_DEBUG' in os.environ
-EXE_EXT = '.exe' if os.name == 'nt' else ''
 
 def get_exe(s):
     if os.name == 'posix':
@@ -71,30 +70,104 @@ def run_command(cmd, wd):
                 find_base(base, 'c')
         raise
 
-def test_dlang(basedir):
-    print('Testing for D ...')
-    wd = os.path.join(basedir, 'dlang')
-    out = run_command('dub run', wd)
+
+# TODO extend this to make everything more data-driven
+
+LANGS = {
+    'dlang': {
+        'name': 'D',
+        'commands': ['dub run'],
+    },
+    'dotnet': {
+        'name': 'C#/.NET',
+        'commands': ['dotnet run'],
+    },
+    'go': {
+        'name': 'Go',
+        'commands': [
+            'go mod download github.com/vsajip/go-cfg-lib/config',
+            'go run main.go'
+        ],
+    },
+    'javascript': {
+        'name': 'JavaScript/Node',
+    },
+    'jvm': {
+        'name': 'Kotlin/Java',
+    },
+    'python': {
+        'name': 'Python',
+    },
+    'ruby': {
+        'name': 'Ruby',
+    },
+    'rust': {
+        'name': 'Rust',
+        'commands': ['cargo run']
+    },
+    'elixir': {
+        'name': 'Elixir',
+    },
+    'nim': {
+        'name': 'Nim',
+        'commands': ['nimble run -y']
+    },
+    'dart': {
+        'name': 'Dart',
+        'commands': [
+            'dart pub get',
+            'dart run'
+        ]
+    }
+}
+
+def lang(s):
+    if s not in LANGS:
+        raise ValueError('Invalid lang: %s' % s)
+    return s
+
+
+def test_generic(lang, basedir):
+    info = LANGS[lang]
+    print('Testing for %(name)s ...' % info)
+    wd = os.path.join(basedir, info.get('subdir', lang))
+    commands = info['commands']
+    n = len(commands)
+    if n > 1:
+        for i in range(n - 1):
+            run_command(commands[i], wd)
+    out = run_command(commands[-1], wd)
     lines = out.splitlines()
     if lines[-1] != 'Hello, world!':
-        raise ValueError('Unexpected result for D: %s' % out)
+        raise ValueError('Unexpected result for %s: %s' % (lang, out))
+
+def test_dlang(basedir):
+    # print('Testing for D ...')
+    # wd = os.path.join(basedir, 'dlang')
+    # out = run_command('dub run', wd)
+    # lines = out.splitlines()
+    # if lines[-1] != 'Hello, world!':
+        # raise ValueError('Unexpected result for D: %s' % out)
+    test_generic('dlang', basedir)
 
 def test_dotnet(basedir):
-    print('Testing for C#/.NET ...')
-    wd = os.path.join(basedir, 'dotnet')
-    out = run_command('dotnet run', wd)
-    lines = out.splitlines()
-    if lines[-1] != 'Hello, world!':
-        raise ValueError('Unexpected result for C#: %s' % out)
+    # print('Testing for C#/.NET ...')
+    # wd = os.path.join(basedir, 'dotnet')
+    # out = run_command('dotnet run', wd)
+    # lines = out.splitlines()
+    # if lines[-1] != 'Hello, world!':
+        # raise ValueError('Unexpected result for C#: %s' % out)
+    test_generic('dotnet', basedir)
 
 def test_go(basedir):
-    print('Testing for Go ...')
-    wd = os.path.join(basedir, 'go')
-    run_command('go mod download github.com/vsajip/go-cfg-lib/config', wd)
-    out = run_command('go run main.go', wd)
-    lines = out.splitlines()
-    if lines[-1] != 'Hello, world!':
-        raise ValueError('Unexpected result for Go: %s' % out)
+    # print('Testing for Go ...')
+    # wd = os.path.join(basedir, 'go')
+    # run_command('go mod download github.com/vsajip/go-cfg-lib/config', wd)
+    # out = run_command('go run main.go', wd)
+    # lines = out.splitlines()
+    # if lines[-1] != 'Hello, world!':
+        # raise ValueError('Unexpected result for Go: %s' % out)
+    test_generic('go', basedir)
 
 def test_js(basedir):
     print('Testing for JavaScript ...')
@@ -143,12 +216,13 @@ def test_ruby(basedir):
         raise ValueError('Unexpected result for Ruby: %s' % out)
 
 def test_rust(basedir):
-    print('Testing for Rust ...')
-    wd = os.path.join(basedir, 'rust')
-    out = run_command('cargo%s run' % EXE_EXT, wd)
-    lines = out.splitlines()
-    if lines[-1] != 'Hello, world!':
-        raise ValueError('Unexpected result for Rust: %s' % out)
+    # print('Testing for Rust ...')
+    # wd = os.path.join(basedir, 'rust')
+    # out = run_command('cargo%s run' % EXE_EXT, wd)
+    # lines = out.splitlines()
+    # if lines[-1] != 'Hello, world!':
+        # raise ValueError('Unexpected result for Rust: %s' % out)
+    test_generic('rust', basedir)
 
 def test_elixir(basedir):
     print('Testing for Elixir ...')
@@ -161,29 +235,23 @@ def test_elixir(basedir):
         raise ValueError('Unexpected result for Elixir: %s' % out)
 
 def test_nim(basedir):
-    print('Testing for Nim ...')
-    wd = os.path.join(basedir, 'nim')
-    out = run_command('%s run -y' % get_exe('nimble'), wd)
-    lines = out.splitlines()
-    if lines[-1] != 'Hello, world!':
-        raise ValueError('Unexpected result for Nim: %s' % out)
+    # print('Testing for Nim ...')
+    # wd = os.path.join(basedir, 'nim')
+    # out = run_command('%s run -y' % get_exe('nimble'), wd)
+    # lines = out.splitlines()
+    # if lines[-1] != 'Hello, world!':
+        # raise ValueError('Unexpected result for Nim: %s' % out)
+    test_generic('nim', basedir)
 
 def test_dart(basedir):
-    print('Testing for Dart ...')
-    wd = os.path.join(basedir, 'dart')
-    run_command('%s pub get' % get_exe('dart'), wd)
-    out = run_command('%s run' % get_exe('dart'), wd)
-    lines = out.splitlines()
-    if lines[-1] != 'Hello, world!':
-        raise ValueError('Unexpected result for Nim: %s' % out)
-
-LANGS = set(('dlang', 'dotnet', 'go', 'javascript', 'jvm', 'python', 'ruby', 'rust',
-             'elixir', 'nim', 'dart'))
-
-def lang(s):
-    if s not in LANGS:
-        raise ValueError('Invalid lang: %s' % s)
-    return s
+    # print('Testing for Dart ...')
+    # wd = os.path.join(basedir, 'dart')
+    # run_command('%s pub get' % get_exe('dart'), wd)
+    # out = run_command('%s run' % get_exe('dart'), wd)
+    # lines = out.splitlines()
+    # if lines[-1] != 'Hello, world!':
+        # raise ValueError('Unexpected result for Dart: %s' % out)
+    test_generic('dart', basedir)
 
 def main():
     print('Running on Python %s: %s' % (sys.version_info[:2], sys.executable))
