@@ -91,6 +91,7 @@ LANGS = {
     },
     'javascript': {
         'name': 'JavaScript/Node',
+        'subdir': 'js'
     },
     'jvm': {
         'name': 'Kotlin/Java',
@@ -138,28 +139,29 @@ def test_generic(lang, basedir):
             run_command(commands[i], wd)
     out = run_command(commands[-1], wd)
     lines = out.splitlines()
-    if lines[-1] != 'Hello, world!':
+    match = info.get('match', 'Hello, world!')
+    if lines[-1] != match:
         raise ValueError('Unexpected result for %s: %s' % (lang, out))
 
-def test_dlang(basedir):
+# def test_dlang(basedir):
     # print('Testing for D ...')
     # wd = os.path.join(basedir, 'dlang')
     # out = run_command('dub run', wd)
     # lines = out.splitlines()
     # if lines[-1] != 'Hello, world!':
         # raise ValueError('Unexpected result for D: %s' % out)
-    test_generic('dlang', basedir)
+    # test_generic('dlang', basedir)
 
-def test_dotnet(basedir):
+# def test_dotnet(basedir):
     # print('Testing for C#/.NET ...')
     # wd = os.path.join(basedir, 'dotnet')
     # out = run_command('dotnet run', wd)
     # lines = out.splitlines()
     # if lines[-1] != 'Hello, world!':
         # raise ValueError('Unexpected result for C#: %s' % out)
-    test_generic('dotnet', basedir)
+    # test_generic('dotnet', basedir)
 
-def test_go(basedir):
+# def test_go(basedir):
     # print('Testing for Go ...')
     # wd = os.path.join(basedir, 'go')
     # run_command('go mod download github.com/vsajip/go-cfg-lib/config', wd)
@@ -167,7 +169,7 @@ def test_go(basedir):
     # lines = out.splitlines()
     # if lines[-1] != 'Hello, world!':
         # raise ValueError('Unexpected result for Go: %s' % out)
-    test_generic('go', basedir)
+    # test_generic('go', basedir)
 
 def test_js(basedir):
     print('Testing for JavaScript ...')
@@ -215,14 +217,14 @@ def test_ruby(basedir):
     if not lines[-1].startswith('Hello, world! ('):
         raise ValueError('Unexpected result for Ruby: %s' % out)
 
-def test_rust(basedir):
+# def test_rust(basedir):
     # print('Testing for Rust ...')
     # wd = os.path.join(basedir, 'rust')
     # out = run_command('cargo%s run' % EXE_EXT, wd)
     # lines = out.splitlines()
     # if lines[-1] != 'Hello, world!':
         # raise ValueError('Unexpected result for Rust: %s' % out)
-    test_generic('rust', basedir)
+    # test_generic('rust', basedir)
 
 def test_elixir(basedir):
     print('Testing for Elixir ...')
@@ -234,16 +236,16 @@ def test_elixir(basedir):
     if lines[-1] != 'Hello, world!':
         raise ValueError('Unexpected result for Elixir: %s' % out)
 
-def test_nim(basedir):
+# def test_nim(basedir):
     # print('Testing for Nim ...')
     # wd = os.path.join(basedir, 'nim')
     # out = run_command('%s run -y' % get_exe('nimble'), wd)
     # lines = out.splitlines()
     # if lines[-1] != 'Hello, world!':
         # raise ValueError('Unexpected result for Nim: %s' % out)
-    test_generic('nim', basedir)
+    # test_generic('nim', basedir)
 
-def test_dart(basedir):
+# def test_dart(basedir):
     # print('Testing for Dart ...')
     # wd = os.path.join(basedir, 'dart')
     # run_command('%s pub get' % get_exe('dart'), wd)
@@ -251,7 +253,7 @@ def test_dart(basedir):
     # lines = out.splitlines()
     # if lines[-1] != 'Hello, world!':
         # raise ValueError('Unexpected result for Dart: %s' % out)
-    test_generic('dart', basedir)
+    # test_generic('dart', basedir)
 
 def main():
     print('Running on Python %s: %s' % (sys.version_info[:2], sys.executable))
@@ -263,28 +265,23 @@ def main():
     options = ap.parse_args()
     options.all = not bool(options.langs)
     basedir = os.getcwd()
-    if options.all or 'dlang' in options.langs:
-        test_dlang(basedir)
-    if options.all or 'dotnet' in options.langs:
-        test_dotnet(basedir)
-    if options.all or 'go' in options.langs:
-        test_go(basedir)
-    if options.all or 'javascript' in options.langs:
-        test_js(basedir)
-    if options.all or 'rust' in options.langs:
-        test_rust(basedir)
-    if options.all or 'ruby' in options.langs:
-        test_ruby(basedir)
-    if options.all or 'python' in options.langs:
-        test_python(basedir)
-    if options.all or 'elixir' in options.langs:
-        test_elixir(basedir)
-    if options.all or 'nim' in options.langs:
-        test_nim(basedir)
-    if options.all or 'dart' in options.langs:
-        test_dart(basedir)
-    if options.all or 'jvm' in options.langs:
-        test_jvm(basedir)
+
+    for language, info in LANGS.items():
+        if not options.all and language not in options.langs:
+            continue
+        if 'commands' in info:
+            test_generic(language, basedir)
+        else:
+            if language == 'javascript':
+                test_js(basedir)
+            elif language == 'ruby':
+                test_ruby(basedir)
+            elif language == 'python':
+                test_python(basedir)
+            elif language =='elixir':
+                test_elixir(basedir)
+            elif language == 'jvm':
+                test_jvm(basedir)
 
 if __name__ == '__main__':
     try:
