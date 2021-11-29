@@ -91,16 +91,38 @@ LANGS = {
     },
     'javascript': {
         'name': 'JavaScript/Node',
-        'subdir': 'js'
+        'subdir': 'js',
+        'commands': [
+            '%s i cfg-lib' % get_exe('npm'),
+            '%s app.js' % get_exe('node')
+        ]
     },
     'jvm': {
         'name': 'Kotlin/Java',
+        'commands': [
+            '%s run --no-daemon' % get_exe('gradle')
+        ],
+        'match': [
+            ('in', 'Hello, Kotlin world!\r\n' if os.name == 'nt' else 'Hello, Kotlin world!\n'),
+            ('in', 'Hello, Java world!\r\n' if os.name == 'nt' else 'Hello, Java world!\n'),
+        ]
     },
     'python': {
         'name': 'Python',
+        'commands': ['python app.py'],
+        'match': [
+            ('startswith', 'Hello, world! (')
+        ]
     },
     'ruby': {
         'name': 'Ruby',
+        'commands': [
+            '%s install' % get_exe('bundle'),
+            '%s cfgclient.rb' % get_exe('ruby')
+        ],
+        'match': [
+            ('startswith', 'Hello, world! (')
+        ]
     },
     'rust': {
         'name': 'Rust',
@@ -108,6 +130,11 @@ LANGS = {
     },
     'elixir': {
         'name': 'Elixir',
+        'commands': [
+            '%s deps.get' % get_exe('mix'),
+            '%s compile' % get_exe('mix'),
+            '%s run cfgclient.exs' % get_exe('mix')
+        ]
     },
     'nim': {
         'name': 'Nim',
@@ -119,7 +146,7 @@ LANGS = {
             'dart pub get',
             'dart run'
         ]
-    }
+    },
 }
 
 def lang(s):
@@ -138,10 +165,22 @@ def test_generic(lang, basedir):
         for i in range(n - 1):
             run_command(commands[i], wd)
     out = run_command(commands[-1], wd)
-    lines = out.splitlines()
     match = info.get('match', 'Hello, world!')
-    if lines[-1] != match:
-        raise ValueError('Unexpected result for %s: %s' % (lang, out))
+    if isinstance(match, str):
+        lines = out.splitlines()
+        if lines[-1] != match:
+            raise ValueError('Unexpected result for %s: %s' % (lang, out))
+    else:
+        assert isinstance(match, (list, tuple))
+        for kind, value in match:
+            assert kind in ('startswith', 'in')
+            if kind == 'startswith':
+                lines = out.splitlines()
+                if not lines[-1].startswith(value):
+                    raise ValueError('Unexpected result for %s: %s' % (lang, out))
+            else:
+                if value not in out:
+                    raise ValueError('Unexpected result for %s: %s' % (lang, out))
 
 # def test_dlang(basedir):
     # print('Testing for D ...')
@@ -171,51 +210,48 @@ def test_generic(lang, basedir):
         # raise ValueError('Unexpected result for Go: %s' % out)
     # test_generic('go', basedir)
 
-def test_js(basedir):
-    print('Testing for JavaScript ...')
-    wd = os.path.join(basedir, 'js')
-    run_command('%s i cfg-lib' % get_exe('npm'), wd)
-    out = run_command('%s app.js' % get_exe('node'), wd)
-    lines = out.splitlines()
-    if lines[-1] != 'Hello, world!':
-        raise ValueError('Unexpected result for JavaScript/Node: %s' % out)
+# def test_js(basedir):
+    # print('Testing for JavaScript ...')
+    # wd = os.path.join(basedir, 'js')
+    # run_command('%s i cfg-lib' % get_exe('npm'), wd)
+    # out = run_command('%s app.js' % get_exe('node'), wd)
+    # lines = out.splitlines()
+    # if lines[-1] != 'Hello, world!':
+        # raise ValueError('Unexpected result for JavaScript/Node: %s' % out)
 
-def test_jvm(basedir):
-    print('Testing for Kotlin/Java ...')
-    wd = os.path.join(basedir, 'jvm')
-    start = time.time()
-    out = run_command('%s run --no-daemon' % get_exe('gradle'), wd)
-    if os.name == 'nt':
-        expected1 = 'Hello, Kotlin world!\r\n'
-        expected2 = 'Hello, Java world!\r\n'
-    else:
-        expected1 = 'Hello, Kotlin world!\n'
-        expected2 = 'Hello, Java world!\n'
-    if expected1 not in out or expected2 not in out:
-        raise ValueError('Unexpected result for JVM: %s' % out)
-    # elapsed = time.time() - start
-    # print('Run completed in %.2f secs' % elapsed)
-    # print(out)
+# def test_jvm(basedir):
+    # print('Testing for Kotlin/Java ...')
+    # wd = os.path.join(basedir, 'jvm')
+    # start = time.time()
+    # out = run_command('%s run --no-daemon' % get_exe('gradle'), wd)
+    # if os.name == 'nt':
+        # expected1 = 'Hello, Kotlin world!\r\n'
+        # expected2 = 'Hello, Java world!\r\n'
+    # else:
+        # expected1 = 'Hello, Kotlin world!\n'
+        # expected2 = 'Hello, Java world!\n'
+    # if expected1 not in out or expected2 not in out:
+        # raise ValueError('Unexpected result for JVM: %s' % out)
 
-def test_python(basedir):
-    print('Testing for Python ...')
-    wd = os.path.join(basedir, 'python')
-    out = run_command(['python', 'app.py'], wd)
-    if 'Hello, world! (' not in out:
-        p = os.path.join(wd, 'app.log')
-        with open(p, encoding='utf-8') as f:
-            data = f.read()
-        print(data)
-        raise ValueError('Unexpected result for Python: %s' % out)
+# def test_python(basedir):
+    # print('Testing for Python ...')
+    # wd = os.path.join(basedir, 'python')
+    # out = run_command(['python', 'app.py'], wd)
+    # if 'Hello, world! (' not in out:
+        # p = os.path.join(wd, 'app.log')
+        # with open(p, encoding='utf-8') as f:
+            # data = f.read()
+        # print(data)
+        # raise ValueError('Unexpected result for Python: %s' % out)
 
-def test_ruby(basedir):
-    print('Testing for Ruby ...')
-    wd = os.path.join(basedir, 'ruby')
-    run_command('%s install' % get_exe('bundle'), wd)
-    out = run_command('%s cfgclient.rb' % get_exe('ruby'), wd)
-    lines = out.splitlines()
-    if not lines[-1].startswith('Hello, world! ('):
-        raise ValueError('Unexpected result for Ruby: %s' % out)
+# def test_ruby(basedir):
+    # print('Testing for Ruby ...')
+    # wd = os.path.join(basedir, 'ruby')
+    # run_command('%s install' % get_exe('bundle'), wd)
+    # out = run_command('%s cfgclient.rb' % get_exe('ruby'), wd)
+    # lines = out.splitlines()
+    # if not lines[-1].startswith('Hello, world! ('):
+        # raise ValueError('Unexpected result for Ruby: %s' % out)
 
 # def test_rust(basedir):
     # print('Testing for Rust ...')
@@ -226,15 +262,15 @@ def test_ruby(basedir):
         # raise ValueError('Unexpected result for Rust: %s' % out)
     # test_generic('rust', basedir)
 
-def test_elixir(basedir):
-    print('Testing for Elixir ...')
-    wd = os.path.join(basedir, 'elixir')
-    run_command('%s deps.get' % get_exe('mix'), wd)
-    run_command('%s compile' % get_exe('mix'), wd)
-    out = run_command('%s run cfgclient.exs' % get_exe('mix'), wd)
-    lines = out.splitlines()
-    if lines[-1] != 'Hello, world!':
-        raise ValueError('Unexpected result for Elixir: %s' % out)
+# def test_elixir(basedir):
+    # print('Testing for Elixir ...')
+    # wd = os.path.join(basedir, 'elixir')
+    # run_command('%s deps.get' % get_exe('mix'), wd)
+    # run_command('%s compile' % get_exe('mix'), wd)
+    # out = run_command('%s run cfgclient.exs' % get_exe('mix'), wd)
+    # lines = out.splitlines()
+    # if lines[-1] != 'Hello, world!':
+        # raise ValueError('Unexpected result for Elixir: %s' % out)
 
 # def test_nim(basedir):
     # print('Testing for Nim ...')
@@ -266,22 +302,25 @@ def main():
     options.all = not bool(options.langs)
     basedir = os.getcwd()
 
-    for language, info in LANGS.items():
+    def sortkey(t):
+        return t[0] if t[0] != 'jvm' else 'zzz'  # sort JVM last, as it takes forever
+    for language, info in sorted(LANGS.items(), key=sortkey):
         if not options.all and language not in options.langs:
             continue
-        if 'commands' in info:
-            test_generic(language, basedir)
-        else:
-            if language == 'javascript':
-                test_js(basedir)
-            elif language == 'ruby':
-                test_ruby(basedir)
-            elif language == 'python':
-                test_python(basedir)
-            elif language =='elixir':
-                test_elixir(basedir)
-            elif language == 'jvm':
-                test_jvm(basedir)
+        assert 'commands' in info
+        test_generic(language, basedir)
+        # if 'commands' in info:
+        # else:
+            # if language == 'javascript':
+                # test_js(basedir)
+            # if language == 'ruby':
+                # test_ruby(basedir)
+            # if language == 'python':
+                # test_python(basedir)
+            # elif language =='elixir':
+                # test_elixir(basedir)
+            # if language == 'jvm':
+                # test_jvm(basedir)
 
 if __name__ == '__main__':
     try:
