@@ -149,6 +149,12 @@ LANGS = {
             'dart run'
         ]
     },
+    'lua': {
+        'name': 'Lua',
+        'commands': [
+            'lua cfgclient.lua'
+        ]
+    },
 }
 
 
