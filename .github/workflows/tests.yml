@@ -31,10 +31,10 @@ jobs:
     - name: Set up Ruby
       # Note: this changes the path, so make sure the Python setup is done after this
       # step - otherwise the Python interpreter that runs won't be the expected one
-      uses: ruby/setup-ruby@473e4d8fe5dd94ee328fdfca9f8c9c7afc9dae5e
+      uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7.2
-        # bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+        ruby-version: 3.0.2
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
