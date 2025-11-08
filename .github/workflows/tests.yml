@@ -43,11 +43,11 @@ jobs:
       if: ${{ matrix.os == 'windows-latest' }}
       uses: actions/setup-node@v2
       with:
-        node-version: 12.x
+        node-version: 18.x
     - name: Set up Nim
       uses: jiro4989/setup-nim-action@v1
       with:
-        nim-version: '1.6.0'
+        nim-version: '2.2.4'
     - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
