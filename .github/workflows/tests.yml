@@ -56,8 +56,8 @@ jobs:
       if: ${{ matrix.os != 'macos-latest' }}
       uses: erlef/setup-beam@v1
       with:
-        otp-version: 22.2
-        elixir-version: 1.9.1
+        otp-version: 28.1
+        elixir-version: 1.19.2
     - name: Set up Dart
       uses: dart-lang/setup-dart@v1
       with:
