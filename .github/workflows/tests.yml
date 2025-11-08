@@ -22,6 +22,7 @@ jobs:
         java-version: 8
         distribution: 'adopt'
     - name: Set up D
+      if: ${{ matrix.os != 'macos-latest' }}  # not compatible
       uses: dlang-community/setup-dlang@4c99aa991ce7d19dd3064de0a4f2f6b2f152e2d7
     - name: Set up Go
       uses: actions/setup-go@v2
@@ -32,7 +33,7 @@ jobs:
       # step - otherwise the Python interpreter that runs won't be the expected one
       uses: ruby/setup-ruby@473e4d8fe5dd94ee328fdfca9f8c9c7afc9dae5e
       with:
-        ruby-version: 2.7.2
+        ruby-version: 3.0.2
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
@@ -79,6 +80,7 @@ jobs:
         $env:path -split ";"
     # Run tests one-by-one to see progress more quickly
     - name: Test D
+      if: ${{ matrix.os != 'macos-latest' }}  # not compatible
       run: |
         python3 test_all.py dlang
       env:
