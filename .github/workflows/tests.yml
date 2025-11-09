@@ -19,7 +19,7 @@ jobs:
     - name: Set up Java
       uses: actions/setup-java@v2
       with:
-        java-version: 8
+        java-version: 17
         distribution: 'adopt'
     - name: Set up D
       if: ${{ matrix.os != 'macos-latest' }}  # not compatible
@@ -27,7 +27,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.17
+        go-version: '1.24'
     - name: Set up Ruby
       # Note: this changes the path, so make sure the Python setup is done after this
       # step - otherwise the Python interpreter that runs won't be the expected one
@@ -51,12 +51,12 @@ jobs:
     - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
-        python-version: 3.9
+        python-version: '3.9'
     - name: Set up Elixir (MacOS excepted)
       if: ${{ matrix.os != 'macos-latest' }}
       uses: erlef/setup-beam@v1
       with:
-        otp-version: 28.1
+        otp-version: '28.1'
         elixir-version: 1.19.2
     - name: Set up Dart
       uses: dart-lang/setup-dart@v1
