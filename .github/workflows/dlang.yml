@@ -1,0 +1,31 @@
+name: D tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up D
+      if: ${{ matrix.os != 'macos-latest' }}  # not compatible
+      uses: dlang-community/setup-dlang@4c99aa991ce7d19dd3064de0a4f2f6b2f152e2d7
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+    - name: Test D
+      if: ${{ matrix.os != 'macos-latest' }}  # not compatible
+      run: |
+        python3 test_all.py dlang
+      env:
+        PY_DEBUG: 1
