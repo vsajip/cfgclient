@@ -13,6 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        ruby-version: ['2.6', '2.7', '3.0', '3.1', '3.2', '3.3', '3.4']
 
     steps:
     - uses: actions/checkout@v4
@@ -21,7 +22,7 @@ jobs:
       # step - otherwise the Python interpreter that runs won't be the expected one
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.0.2
+        ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - name: Set up Python 3.9
       uses: actions/setup-python@v5
