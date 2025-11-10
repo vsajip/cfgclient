@@ -4,8 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      go/**
-      test_all.py
+      - go/**
+      - test_all.py
+      - .github/workflows/go.yml
 
 jobs:
   build:

@@ -4,8 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      jvm/**
-      test_all.py
+      - jvm/**
+      - test_all.py
+      - .github/workflows/jvm.yml
 
   #pull_request:
     #branches: [ main ]

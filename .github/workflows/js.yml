@@ -4,8 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      js/**
-      test_all.py
+      - js/**
+      - test_all.py
+      - .github/workflows/js.yml
 
 jobs:
   build:

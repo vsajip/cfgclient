@@ -4,8 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      dlang/**
-      test_all.py
+      - dlang/**
+      - test_all.py
+      - .github/workflows/dlang.yml
 
 jobs:
   build:

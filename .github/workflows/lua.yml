@@ -4,9 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      lua/**
-      test_all.py
-
+      - lua/**
+      - test_all.py
+      - .github/workflows/lua.yml
 
 jobs:
   build:

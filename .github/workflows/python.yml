@@ -4,8 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      python/**
-      test_all.py
+      - python/**
+      = test_all.py
+      - .github/workflows/python.yml
 
   #pull_request:
     #branches: [ main ]

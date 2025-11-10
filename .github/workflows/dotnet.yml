@@ -4,8 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      dotnet/**
-      test_all.py
+      - dotnet/**
+      - test_all.py
+      - .github/workflows/dotnet.yml
 
 jobs:
   build:

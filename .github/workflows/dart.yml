@@ -4,8 +4,9 @@ on:
   push:
     branches: [ main ]
     paths:
-      dart/**
-      test_all.py
+      - dart/**
+      - test_all.py
+      - .github/workflows/dart.yml
 
 jobs:
   build:
