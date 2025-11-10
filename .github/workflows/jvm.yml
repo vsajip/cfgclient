@@ -3,8 +3,12 @@ name: JVM tests
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      jvm/**
+      test_all.py
+
+  #pull_request:
+    #branches: [ main ]
 
 jobs:
   build:

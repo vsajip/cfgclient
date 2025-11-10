@@ -3,8 +3,12 @@ name: Rust tests
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      rust/**
+      test_all.py
+
+  #pull_request:
+    #branches: [ main ]
 
 jobs:
   build:

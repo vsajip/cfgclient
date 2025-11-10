@@ -3,8 +3,9 @@ name: Elixir tests
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      elixir/**
+      test_all.py
 
 jobs:
   build:

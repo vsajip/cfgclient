@@ -3,8 +3,12 @@ name: Ruby tests
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      ruby/**
+      test_all.py
+
+  #pull_request:
+    #branches: [ main ]
 
 jobs:
   build:

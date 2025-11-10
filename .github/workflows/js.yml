@@ -3,8 +3,9 @@ name: JS tests
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      js/**
+      test_all.py
 
 jobs:
   build:
