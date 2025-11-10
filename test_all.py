@@ -19,9 +19,13 @@ def get_exe(s):
     if os.name == 'posix':
         return s
     ext = '.exe'
-    if s in ('npm', 'bundle', 'bundler', 'racc', 'rake', 'rdoc', 'ri', 'ridk',
-             'erb', 'irb', 'gem'):
+    if s in ('npm', 'racc', 'rake', 'rdoc', 'ri', 'ridk', 'erb', 'irb', 'gem'):
         ext = '.cmd'
+    elif s in ('bundle', 'bundler'):
+        ext = '.cmd'
+        rv = os.environ.get('RUBY_VERSION')
+        if rv and rv >= '3.1':
+            ext = '.bat'
     elif s in ('mix',):
         ext = '.bat'
     return '%s%s' % (s, ext)
